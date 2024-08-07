@@ -28,6 +28,7 @@ const schema = mongoose.Schema(
     },
     status: {
       type: String,
+      enum: ["Running", "Completed", "PreSell"],
       required: true,
     },
     discount: {

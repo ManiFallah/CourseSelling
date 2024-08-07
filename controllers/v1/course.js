@@ -182,12 +182,19 @@ exports.getPopular = async (req, res) => {
   courses.sort(function (a, b) {
     return a.users - b.users;
   });
-  const topCourses = [
-    courses[0],
-    courses[1],
-    courses[2],
-    courses[3],
-    courses[4],
-  ];
+  let topCourses = [];
+  for (let i = 0; i < 5; i++) {
+    if (courses[i]) {
+      topCourses.push(courses[i]);
+    }
+  }
   res.status(200).json(topCourses);
+};
+exports.preSell = async (req, res) => {
+  const preSellcourses = await courseModel.find({ status: "preSell" }).lean();
+  if (preSellcourses[0]) {
+    res.status(200).json(preSellcourses);
+  } else {
+    res.status(404).json({ message: "There is No PreSelling Course" });
+  }
 };

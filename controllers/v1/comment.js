@@ -83,12 +83,18 @@ exports.answer = async (req, res) => {
   res.status(201).json({ message: "Comment Created Succesfully" });
 };
 exports.getAll = async (req, res) => {
-  const comments = await commentModel
-    .find({})
-    .populate("course", "name")
-    .populate("user", "username")
+  const mainComment = await commentModel
+    .find({ isAnswer: 0 })
+    .populate("course")
+    .populate("user", "-password")
     .lean();
-  res.status(200).json(comments);
+  const answers = await commentModel
+    .find({ isAnswer: 1 })
+    .populate("course")
+    .populate("user", "-password")
+    .populate("mainComment")
+    .lean();
+  res.status(200).json({ mainComment, answers });
 };
 exports.getCourseComments = async (req, res) => {
   const course = await courseModel.findOne({ href: req.params.href });

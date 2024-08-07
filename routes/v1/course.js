@@ -24,6 +24,7 @@ router
     controller.creatSession
   );
 router.route("/popular").get(controller.getPopular);
+router.route("/presell").get(controller.preSell);
 router.route("/sessions").get(auth, isAdmin, controller.getAll);
 router.route("/sessions/:id").delete(auth, isAdmin, controller.delete);
 router.route("/:href/:sessionID").get(controller.getSession);
