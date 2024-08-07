@@ -9,7 +9,7 @@ exports.register = async (req, res) => {
     return res.status(422).json(result);
   }
   const { username, fullname, email, phone, password } = req.body;
-  const bannedPhoneNum = banModel.findOne({ phone });
+  const bannedPhoneNum = await banModel.findOne({ phone });
   if (bannedPhoneNum) {
     return res
       .status(403)
@@ -43,6 +43,37 @@ exports.register = async (req, res) => {
   return res.status(201).json({ user: userObject, accessToken });
 };
 
-exports.login = async (req, res) => {};
+exports.login = async (req, res) => {
+  const { password, identifier } = req.body;
+  if (
+    !password ||
+    !identifier ||
+    password.length < 8 ||
+    password == "" ||
+    identifier == ""
+  ) {
+    return res.status(422).json({ message: "Wrong Inputs" });
+  }
+  const user = await userModel.findOne({
+    $or: [{ email: identifier }, { username: identifier }],
+  });
+  if (user) {
+    const passwordMatches = await bcrypt.compare(password, user.password);
+    if (!passwordMatches) {
+      return res.status(401).json({ message: "Wrong Password" });
+    } else {
+      const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "30 day",
+      });
+      return res
+        .status(200)
+        .json({ message: "Logined Successfully", accessToken });
+    }
+  } else {
+    return res
+      .status(401)
+      .json({ message: "There is No User With This Email or Username" });
+  }
+};
 
 exports.getMe = async (req, res) => {};
