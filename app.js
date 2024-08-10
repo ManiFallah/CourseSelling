@@ -5,6 +5,10 @@ const courseRouter = require("./routes/v1/course");
 const categoryRouter = require("./routes/v1/category");
 const commentRouter = require("./routes/v1/comment");
 const contactRouter = require("./routes/v1/contact");
+const newsLetterRouter = require("./routes/v1/newsLetter");
+const searchRouter = require("./routes/v1/search");
+const notifRouter = require("./routes/v1/notification");
+const offRouter = require("./routes/v1/off");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -17,9 +21,13 @@ app.use(
   express.static(path.join(__dirname, "public", "courses", "covers"))
 );
 app.use("/v1/auth", authRouter);
+app.use("/v1/newsLetter", newsLetterRouter);
 app.use("/v1/user", userRouter);
 app.use("/v1/category", categoryRouter);
 app.use("/v1/course", courseRouter);
 app.use("/v1/comments", commentRouter);
 app.use("/v1/contact", contactRouter);
+app.use("/v1/search", searchRouter);
+app.use("/v1/notif", notifRouter);
+app.use("/v1/off", offRouter);
 module.exports = app;
