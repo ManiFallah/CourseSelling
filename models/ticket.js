@@ -29,7 +29,7 @@ const schema = mongoose.Schema(
       ref: "Department",
       required: true,
     },
-    departmentSubId: {
+    subDepartmentId: {
       type: mongoose.Types.ObjectId,
       ref: "subdepartment",
       required: true,

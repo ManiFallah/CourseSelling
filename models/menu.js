@@ -5,12 +5,21 @@ const schema = mongoose.Schema(
       type: String,
       required: true,
     },
+    href: {
+      type: String,
+      required: true,
+    },
+    isParent: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
     parent: {
       type: mongoose.Types.ObjectId,
-      ref: "department",
+      required: false,
     },
   },
   { timestamps: true }
 );
-const model = mongoose.model("subdepartment", schema);
+const model = mongoose.model("menu", schema);
 module.exports = model;
